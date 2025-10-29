@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Marks Prediction (Linear Regression)</title>
+    <style>
+        /* Reset some basic elements */
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f5f7fa;
+            color: #333;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 600px;
+            background: #fff;
+            margin: 50px auto;
+            padding: 30px 40px;
+            border-radius: 10px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            text-align: center;
+            color: #2c3e50;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+
+        .muted {
+            text-align: center;
+            color: #7f8c8d;
+            margin-bottom: 30px;
+            font-size: 1rem;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #34495e;
+            font-size: 0.95rem;
+        }
+
+        input[type="number"] {
+            width: 100%;
+            padding: 12px 15px;
+            margin-bottom: 20px;
+            border: 1.5px solid #bdc3c7;
+            border-radius: 6px;
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
+        }
+
+        input[type="number"]:focus {
+            border-color: #2980b9;
+            outline: none;
+            box-shadow: 0 0 8px rgba(41, 128, 185, 0.3);
+        }
+
+        button {
+            width: 100%;
+            background-color: #2980b9;
+            border: none;
+            padding: 15px;
+            color: white;
+            font-size: 1.1rem;
+            font-weight: 700;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            margin-top: 10px;
+        }
+
+        button:hover {
+            background-color: #1f6391;
+        }
+
+        .error {
+            background-color: #e74c3c;
+            color: white;
+            padding: 12px 15px;
+            border-radius: 6px;
+            margin-bottom: 20px;
+            font-weight: 600;
+            text-align: center;
+            box-shadow: 0 2px 6px rgba(231, 76, 60, 0.4);
+        }
+
+        .result {
+            background-color: #ecf0f1;
+            padding: 20px 25px;
+            margin-top: 30px;
+            border-radius: 10px;
+            border: 1px solid #bdc3c7;
+        }
+
+        .result h2 {
+            color: #27ae60;
+            font-weight: 700;
+            margin-bottom: 15px;
+        }
+
+        .score {
+            font-size: 2.2rem;
+            color: #27ae60;
+        }
+
+        .result h3 {
+            margin-top: 20px;
+            color: #34495e;
+            font-weight: 600;
+            border-bottom: 2px solid #2980b9;
+            padding-bottom: 5px;
+        }
+
+        ul {
+            list-style: none;
+            padding-left: 0;
+            margin-top: 10px;
+        }
+
+        ul li {
+            padding: 6px 0;
+            border-bottom: 1px solid #dcdde1;
+            font-size: 1rem;
+            color: #2c3e50;
+        }
+
+        ul li:last-child {
+            border-bottom: none;
+        }
+
+        footer {
+            margin-top: 40px;
+            text-align: center;
+            color: #95a5a6;
+            font-size: 0.9rem;
+            font-style: italic;
+        }
+
+        /* Responsive */
+        @media (max-width: 640px) {
+            .container {
+                margin: 20px;
+                padding: 25px 20px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Marks Predictor</h1>
+        <p class="muted">Enter student features and click Predict.</p>
+
+        {% if error %}
+        <div class="error">{{ error }}</div>
+        {% endif %}
+
+        // ...existing code...
+        {% if error %}
+        <div class="error">{{ error }}</div>
+        {% endif %}
+
+        <form action="/predict" method="POST">
+            <label for="hours">Hours Studied (e.g., 5)</label>
+            <input id="hours" type="number" step="0.1" name="hours" title="Enter hours studied (e.g., 5)"
+                placeholder="e.g., 5" value="{{ inputs.hours or '' }}" required />
+
+            <label for="attendance">Attendance % (0-100)</label>
+            <input id="attendance" type="number" step="0.1" name="attendance"
+                title="Enter attendance percentage between 0 and 100" placeholder="e.g., 85"
+                value="{{ inputs.attendance or '' }}" required />
+
+            <label for="assignments">Assignments Average (%)</label>
+            <input id="assignments" type="number" step="0.1" name="assignments"
+                title="Enter assignments average as a percentage" placeholder="e.g., 92"
+                value="{{ inputs.assignments or '' }}" required />
+
+            <label for="sleep">Sleep Hours (per day)</label>
+            <input id="sleep" type="number" step="0.1" name="sleep" title="Enter average sleep hours per day"
+                placeholder="e.g., 7.5" value="{{ inputs.sleep or '' }}" required />
+
+            <label for="previous">Previous Marks (out of 100)</label>
+            <input id="previous" type="number" step="0.1" name="previous" title="Enter previous marks out of 100"
+                placeholder="e.g., 78" value="{{ inputs.previous or '' }}" required />
+
+            <button type="submit">Predict</button>
+        </form>
+
+        {% if result is not none %}
+        <div class="result">
+            <h2>Predicted Marks: <span class="score">{{ result }}</span></h2>
+            <h3>Inputs</h3>
+            <ul>
+                {% for k,v in inputs.items() %}
+                <li><strong>{{ k }}:</strong> {{ v }}</li>
+                {%- endfor -%}
+            </ul>
+
+            // ...existing code...
+            <h3>Model coefficients (feature influence)</h3>
+            <ul>
+                {%- for f,c in coefs -%}
+                <li>{{ f }}: {{ c }}</li>
+                {%- endfor -%}
+            </ul>
+        </div>
+    </div>
+    {% endif %}
+
+    <footer>
+        <small>Simple linear regression demo - great teaching feature impact and prediction.</small>
+    </footer>
+    </div>
+</body>
+
+</html>
