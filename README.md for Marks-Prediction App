@@ -1,0 +1,82 @@
+🚀 Features
+* 📘 User-friendly web interface
+* 🤖 Machine Learning model trained on real dataset (marks.csv)
+* 📈 Predicts student marks based on hours studied (or other features you used)
+* 🔄 Runs completely in the browser + Python backend
+* ⚡ Fast prediction using pre-trained model
+* 🗂️ Clean project structure for easy modification
+
+📂 Project Structure
+
+marks-prediction-app/
+│
+├── app.py              # Flask backend (routes + model loading)
+├── train.py            # Script to train the ML model
+├── predict.py          # Helper function to run predictions
+├── model.joblib        # Trained machine learning model
+│
+├── marks.csv           # Dataset used for training
+│
+├── index.html          # Frontend UI
+├── main.js             # Handles frontend logic & API calls
+├── jsconfig.json       # JavaScript config
+├── .hintrc             # HTML hinting config
+│
+└── README.md           # Documentation (this file)
+
+🛠️ Technologies Used
+Frontend
+*HTML5 – interface layout
+*JavaScript – form validation + API requests
+
+Backend
+*Python 3
+*Flask – web framework
+*Joblib – loading ML model
+*Pandas / NumPy – data handling
+*Scikit-learn – model training
+
+🧠 How the App Works
+
+1.User enters input values on the website (e.g., hours studied)
+2.JavaScript sends the data to Flask backend (/predict route)
+3.predict.py loads model.joblib
+4.ML model calculates predicted marks
+5.Result is sent back and displayed on the webpage
+
+▶️ Running the Project Locally
+1. Install Dependencies
+
+Open terminal:
+pip install flask numpy pandas scikit-learn joblib
+
+2. Run the Flask Server
+python app.py
+
+3. Open the App
+Go to:
+http://127.0.0.1:5000
+
+📊 Model Training
+
+The ML model is trained using data in marks.csv.
+
+Training is handled by:
+train.py
+
+Run it if you want to retrain:
+python train.py
+
+This generates a new:
+model.joblib
+
+✨ Future Enhancements
+
+*Add multiple features (attendance, IQ level, study pattern, etc.)
+*Add graphs showing performance trends
+*Add a student dashboard
+*Deploy using Render, Vercel, or AWS
+
+📄 License
+This project is open-source. Feel free to modify and improve it.
+
